@@ -28,7 +28,7 @@ go run cmd/api/main/go --port 8080
 ### Examples
 #### Create a device
 ```shell
-curl --location --request POST 'http://127.0.0.1:8080/device' \
+curl --location --request POST 'http://127.0.0.1:8080/api/v1/device' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "name" : "Iphone",
@@ -44,6 +44,6 @@ curl --location --request GET 'http://localhost:8080/api/v1/device/{id}' \
 
 #### Delete a device
 ```shell
-curl --location --request DELET 'http://localhost:8080/api/v1/device/{id}' \
+curl --location --request DELETE 'http://localhost:8080/api/v1/device/{id}' \
 --data-raw ''
 ```
