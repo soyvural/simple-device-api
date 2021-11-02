@@ -54,8 +54,16 @@ func TestCreateDevice(t *testing.T) {
 			wantedStatusCode: http.StatusCreated,
 		},
 		{
+			desc: "invalid JSON",
+			device: &types.Device{
+				Name:  "!name$",
+				Brand: "Apple",
+			},
+			wantedStatusCode: http.StatusBadRequest,
+		},
+		{
 			desc:             "invalid device",
-			deviceJSON:       `{"name": 12334}`,
+			deviceJSON:       `{"name": "12334"}`,
 			wantedStatusCode: http.StatusBadRequest,
 		},
 		{
@@ -71,6 +79,7 @@ func TestCreateDevice(t *testing.T) {
 	}
 
 	for _, tc := range tests {
+		tc := tc
 		t.Run(tc.desc, func(t *testing.T) {
 			router := gin.Default()
 			svc := &Service{router: router, deviceSvc: newDeviceService(&fakeDB{mockVal: tc.returningVal})}
@@ -90,7 +99,7 @@ func TestCreateDevice(t *testing.T) {
 			router.ServeHTTP(rr, req)
 
 			if diff := cmp.Diff(tc.wantedStatusCode, rr.Code); diff != "" {
-				t.Errorf("Status code mismatch (-want +got): %s\n", diff)
+				t.Fatalf("Status code mismatch (-want +got): %s\n", diff)
 			}
 		})
 	}
@@ -123,6 +132,7 @@ func TestGetDevice(t *testing.T) {
 	}
 
 	for _, tc := range tests {
+		tc := tc
 		t.Run(tc.desc, func(t *testing.T) {
 			router := gin.Default()
 			svc := &Service{router: router, deviceSvc: newDeviceService(&fakeDB{mockVal: tc.returningVal})}
@@ -133,7 +143,7 @@ func TestGetDevice(t *testing.T) {
 			router.ServeHTTP(rr, req)
 
 			if diff := cmp.Diff(tc.wantedStatusCode, rr.Code); diff != "" {
-				t.Errorf("Status code mismatch (-want +got): %s\n", diff)
+				t.Fatalf("Status code mismatch (-want +got): %s\n", diff)
 			}
 
 			if tc.wantedStatusCode != 200 {
@@ -146,7 +156,7 @@ func TestGetDevice(t *testing.T) {
 			}
 
 			if diff := cmp.Diff(*tc.returningVal, d); diff != "" {
-				t.Errorf("Returning device mismatch (-want +got): %s\n", diff)
+				t.Fatalf("Returning device mismatch (-want +got): %s\n", diff)
 			}
 		})
 	}
@@ -179,6 +189,7 @@ func TestDeleteDevice(t *testing.T) {
 	}
 
 	for _, tc := range tests {
+		tc := tc
 		t.Run(tc.desc, func(t *testing.T) {
 			router := gin.Default()
 			svc := &Service{router: router, deviceSvc: newDeviceService(&fakeDB{mockVal: tc.returningVal})}
@@ -189,7 +200,7 @@ func TestDeleteDevice(t *testing.T) {
 			router.ServeHTTP(rr, req)
 
 			if diff := cmp.Diff(tc.wantedStatusCode, rr.Code); diff != "" {
-				t.Errorf("Status code mismatch (-want +got): %s\n", diff)
+				t.Fatalf("Status code mismatch (-want +got): %s\n", diff)
 			}
 
 			if tc.wantedStatusCode != 200 {
@@ -202,7 +213,7 @@ func TestDeleteDevice(t *testing.T) {
 			}
 
 			if diff := cmp.Diff(*tc.returningVal, d); diff != "" {
-				t.Errorf("Returning device mismatch (-want +got): %s\n", diff)
+				t.Fatalf("Returning device mismatch (-want +got): %s\n", diff)
 			}
 		})
 	}
