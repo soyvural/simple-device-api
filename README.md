@@ -1,0 +1,49 @@
+# simple device api
+
+Simple Device API is really simple and concise to show how easy to implement a Restful Service with using Golang.
+
+It uses [gin](https://github.com/gin-gonic/gin) framework for http router.
+
+
+### Generate OpenAPI spec doc with swagger
+```shell
+swag init -g doc.go
+```
+
+### Build docker image locally
+```shell
+docker build -f build/Dockerfile -t simple-device-api:latest .
+```
+
+### Run with docker in your local
+```shell
+docker run -p 8080:8080 simple-device-api:latest
+```
+
+### Run from source code in your local
+```shell
+go run cmd/api/main/go --port 8080
+```
+
+### Examples
+#### Create a device
+```shell
+curl --location --request POST 'http://127.0.0.1:8080/device' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name" : "Iphone",
+    "brand": "Apple",
+    "model": "13 Pro Max"
+}'
+```
+#### Get a device
+```shell
+curl --location --request GET 'http://localhost:8080/api/v1/device/{id}' \
+--data-raw ''
+```
+
+#### Delete a device
+```shell
+curl --location --request DELET 'http://localhost:8080/api/v1/device/{id}' \
+--data-raw ''
+```

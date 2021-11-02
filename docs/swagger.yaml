@@ -1,0 +1,78 @@
+definitions:
+  types.Device:
+    properties:
+      brand:
+        type: string
+      id:
+        description: 'ID is in UUID format. ref: https://datatracker.ietf.org/doc/html/rfc4122'
+        type: string
+      model:
+        type: string
+      name:
+        type: string
+    type: object
+host: localhost:2172
+info:
+  contact: {}
+  description: Simpe Device API
+  title: Simpe Device API
+  version: "0.1"
+paths:
+  /api/v1/device:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes the device by given id.
+      parameters:
+      - description: Device ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Device'
+      summary: Show a list of students
+    post:
+      consumes:
+      - application/json
+      description: Creates a device and returns device object recently created in store.
+      parameters:
+      - description: Device definition
+        in: body
+        name: device
+        required: true
+        schema:
+          $ref: '#/definitions/types.Device'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/types.Device'
+      summary: Show a list of students
+  /api/v1/device/{id}:
+    get:
+      consumes:
+      - application/json
+      description: retrieves the Device and returns it by given ID.
+      parameters:
+      - description: Device ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      security:
+      - ApiKeyAuth: []
+schemes:
+- http
+swagger: "2.0"
