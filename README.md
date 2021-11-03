@@ -33,6 +33,8 @@ sh build/build.sh
 GIN_MODE=debug go run cmd/api/main.go --port 8080
 ```
 
+### Swagger documentation URL
+http://HOST:PORT/swagger/index.html
 ### Examples
 #### Create a device
 ```shell
