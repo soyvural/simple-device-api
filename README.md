@@ -20,9 +20,17 @@ docker build -f build/Dockerfile -t simple-device-api:latest .
 docker run -p 8080:8080 simple-device-api:latest
 ```
 
+### Build and publish with docker
+```shell
+BUILD_VERSION=""
+DOCKER_USERNAME=""
+DOCKER_PASSWORD=""
+sh build/build.sh
+```
+
 ### Run from source code in your local
 ```shell
-go run cmd/api/main/go --port 8080
+GIN_MODE=debug go run cmd/api/main.go --port 8080
 ```
 
 ### Examples
