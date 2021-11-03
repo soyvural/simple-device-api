@@ -146,7 +146,7 @@ func TestGetDevice(t *testing.T) {
 				t.Fatalf("Status code mismatch (-want +got): %s\n", diff)
 			}
 
-			if tc.wantedStatusCode != 200 {
+			if needToLookResponse := (tc.wantedStatusCode == http.StatusOK); !needToLookResponse {
 				return
 			}
 
@@ -203,7 +203,7 @@ func TestDeleteDevice(t *testing.T) {
 				t.Fatalf("Status code mismatch (-want +got): %s\n", diff)
 			}
 
-			if tc.wantedStatusCode != 200 {
+			if needToLookResponse := (tc.wantedStatusCode == http.StatusOK); !needToLookResponse {
 				return
 			}
 
