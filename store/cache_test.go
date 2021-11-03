@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/soyvural/simple-device-api/types"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestCreateDevice(t *testing.T) {
@@ -41,8 +43,8 @@ func TestCreateDevice(t *testing.T) {
 			gotSize := len(c.data)
 			c.mu.RUnlock()
 
-			if tc.wantedSize != gotSize {
-				t.Fatalf("Size mismatch -want:%d +got:%d\n", tc.wantedSize, gotSize)
+			if diff := cmp.Diff(tc.wantedSize, gotSize); diff != "" {
+				t.Fatalf("Item size mismatch (-want +got): %s\n", diff)
 			}
 		})
 	}
