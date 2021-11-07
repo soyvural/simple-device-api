@@ -12,20 +12,20 @@ swag init -g doc.go
 
 ### Build docker image locally
 ```shell
-docker build -f build/Dockerfile -t simple-device-api:latest .
+BUILD_VERSION=0.0.1
+docker build -f build/Dockerfile -t docker.io/simple-device-api:$BUILD_VERSION .
 ```
 
 ### Run with docker in your local
 ```shell
-docker run -p 8080:8080 simple-device-api:latest
+docker run -p 8080:8080 docker.io/simple-device-api:$BUILD_VERSION
 ```
 
 ### Build and publish with docker
 ```shell
-BUILD_VERSION=""
 DOCKER_USERNAME=""
 DOCKER_PASSWORD=""
-sh build/build.sh
+sh build/build.sh $BUILD_VERSION
 ```
 
 ### Run from source code in your local
