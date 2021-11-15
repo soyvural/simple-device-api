@@ -1,8 +1,11 @@
 package store
 
 import (
+	"context"
 	"fmt"
+	"sync"
 	"testing"
+	"time"
 
 	"github.com/soyvural/simple-device-api/types"
 
@@ -115,5 +118,48 @@ func TestDeleteDevice(t *testing.T) {
 				t.Fatalf("got nil but wanted an existing device, id %s.", tc.id)
 			}
 		})
+	}
+}
+
+func TestCacheConcurrency(t *testing.T) {
+	c := NewCache()
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	go func() {
+		defer wg.Done()
+		for i := 1; i <= 100; i++ {
+			c.Insert(types.Device{ID: fmt.Sprintf("%d", i)})
+		}
+	}()
+	go func() {
+		defer wg.Done()
+		ids := make(map[string]bool, 100)
+		for i := 1; i <= 100; i++ {
+			ids[fmt.Sprintf("%d", i)] = true
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+		defer cancel()
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+				for id := range ids {
+					if c.Delete(id) != nil {
+						delete(ids, id)
+					}
+				}
+			}
+		}
+	}()
+	wg.Wait()
+
+	c.mu.RLock()
+	gotSize := len(c.data)
+	c.mu.RUnlock()
+
+	if diff := cmp.Diff(0, gotSize); diff != "" {
+		t.Fatalf("Item size mismatch (-want +got): %s\n", diff)
 	}
 }

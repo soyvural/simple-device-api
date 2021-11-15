@@ -1,10 +1,10 @@
 package service
 
 import (
-	"github.com/google/uuid"
 	"github.com/soyvural/simple-device-api/store"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
 	ginSwagger "github.com/swaggo/gin-swagger"

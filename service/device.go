@@ -6,10 +6,10 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/google/uuid"
 	"github.com/soyvural/simple-device-api/types"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type db interface {

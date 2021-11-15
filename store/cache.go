@@ -6,6 +6,8 @@ import (
 	"github.com/soyvural/simple-device-api/types"
 )
 
+// limit is the maximum number of devices that can be stored in the cache.
+// This is to prevent the cache from growing indefinitely.
 const limit = 10000
 
 type cache struct {
@@ -53,12 +55,7 @@ func (c *cache) Delete(id string) *types.Device {
 	defer c.mu.Unlock()
 	if d, ok := c.data[id]; ok {
 		delete(c.data, id)
-		return &types.Device{
-			ID:    d.ID,
-			Name:  d.Name,
-			Brand: d.Brand,
-			Model: d.Model,
-		}
+		return &d
 	}
 	return nil
 }
