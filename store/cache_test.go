@@ -138,7 +138,7 @@ func TestCacheConcurrency(t *testing.T) {
 		for i := 1; i <= 100; i++ {
 			ids[fmt.Sprintf("%d", i)] = true
 		}
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
 		defer cancel()
 		for {
 			select {
