@@ -173,10 +173,6 @@ func TestCacheConcurrencyWithProducerConsumer(t *testing.T) {
 	if diff := cmp.Diff(0, gotSize); diff != "" {
 		t.Fatalf("Item size mismatch (-want +got): %s\n", diff)
 	}
-
-	if diff := cmp.Diff(0, gotSize); diff != "" {
-		t.Fatalf("Item size mismatch (-want +got): %s\n", diff)
-	}
 }
 
 func TestCacheConcurrencyWithMultiProducers(t *testing.T) {
