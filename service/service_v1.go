@@ -25,7 +25,7 @@ func New(r *gin.Engine) *Service {
 
 func (s *Service) SetRoute_v1() {
 	v1 := s.router.Group("/api/v1")
-	deviceRouter := v1.Group("/device")
+	deviceRouter := v1.Group("/devices")
 
 	deviceRouter.POST("", s.deviceSvc.CreateDevice)
 	deviceRouter.GET(":id", s.deviceSvc.GetDevice)

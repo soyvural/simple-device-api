@@ -11,7 +11,7 @@ definitions:
       name:
         type: string
     type: object
-host: localhost:2172
+host: localhost:8080
 info:
   contact: {}
   description: Simpe Device API

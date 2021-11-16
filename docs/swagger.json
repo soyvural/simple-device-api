@@ -9,7 +9,7 @@
         "contact": {},
         "version": "0.1"
     },
-    "host": "localhost:2172",
+    "host": "localhost:8080",
     "paths": {
         "/api/v1/device": {
             "post": {

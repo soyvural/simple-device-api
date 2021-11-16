@@ -38,7 +38,7 @@ http://HOST:PORT/swagger/index.html
 ### Examples
 #### Create a device
 ```shell
-curl --location --request POST 'http://127.0.0.1:8080/api/v1/device' \
+curl --location --request POST 'http://127.0.0.1:8080/api/v1/devices' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "name" : "Iphone",
@@ -48,12 +48,12 @@ curl --location --request POST 'http://127.0.0.1:8080/api/v1/device' \
 ```
 #### Get a device
 ```shell
-curl --location --request GET 'http://localhost:8080/api/v1/device/{id}' \
+curl --location --request GET 'http://localhost:8080/api/v1/devices/{id}' \
 --data-raw ''
 ```
 
 #### Delete a device
 ```shell
-curl --location --request DELETE 'http://localhost:8080/api/v1/device/{id}' \
+curl --location --request DELETE 'http://localhost:8080/api/v1/devices/{id}' \
 --data-raw ''
 ```

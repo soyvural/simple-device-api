@@ -94,10 +94,10 @@ func (d *device) GetDevice(c *gin.Context) {
 func (d *device) validateInput(dev *types.Device) error {
 	var errs []error
 	if !d.re.MatchString(dev.Name) {
-		errs = append(errs, fmt.Errorf("invalid device name %q.", dev.Name))
+		errs = append(errs, fmt.Errorf("invalid device name %q", dev.Name))
 	}
 	if !d.re.MatchString(dev.Brand) {
-		errs = append(errs, fmt.Errorf("invalid device brand %q.", dev.Brand))
+		errs = append(errs, fmt.Errorf("invalid device brand %q", dev.Brand))
 	}
 	if len(errs) == 0 {
 		return nil
