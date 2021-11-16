@@ -121,23 +121,28 @@ func TestDeleteDevice(t *testing.T) {
 	}
 }
 
-func TestCacheConcurrency(t *testing.T) {
+func TestCacheConcurrencyWithProducerConsumer(t *testing.T) {
 	c := NewCache()
-	var wg sync.WaitGroup
+
+	wg := sync.WaitGroup{}
 	wg.Add(2)
 
+	ids := make(map[string]int)
+	for i := 1; i <= 100; i++ {
+		ids[fmt.Sprintf("%d", i)] = 0
+	}
+
+	// producer
 	go func() {
 		defer wg.Done()
 		for i := 1; i <= 100; i++ {
 			c.Insert(types.Device{ID: fmt.Sprintf("%d", i)})
 		}
 	}()
+
+	// consumer
 	go func() {
 		defer wg.Done()
-		ids := make(map[string]bool, 100)
-		for i := 1; i <= 100; i++ {
-			ids[fmt.Sprintf("%d", i)] = true
-		}
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
 		defer cancel()
 		for {
@@ -147,7 +152,7 @@ func TestCacheConcurrency(t *testing.T) {
 			default:
 				for id := range ids {
 					if c.Delete(id) != nil {
-						delete(ids, id)
+						ids[id]++
 					}
 				}
 			}
@@ -159,7 +164,41 @@ func TestCacheConcurrency(t *testing.T) {
 	gotSize := len(c.data)
 	c.mu.RUnlock()
 
+	for id, count := range ids {
+		if count > 1 {
+			t.Fatalf("id %s was deleted %d times\n", id, count)
+		}
+	}
+
 	if diff := cmp.Diff(0, gotSize); diff != "" {
+		t.Fatalf("Item size mismatch (-want +got): %s\n", diff)
+	}
+
+	if diff := cmp.Diff(0, gotSize); diff != "" {
+		t.Fatalf("Item size mismatch (-want +got): %s\n", diff)
+	}
+}
+
+func TestCacheConcurrencyWithMultiProducers(t *testing.T) {
+	c := NewCache()
+	wanted := 1000
+	var wg sync.WaitGroup
+	wg.Add(wanted)
+	for i := 1; i <= wanted; i++ {
+		i := i
+		go func() {
+			defer wg.Done()
+			c.Insert(types.Device{ID: fmt.Sprintf("%d", i)})
+		}()
+
+	}
+	wg.Wait()
+
+	c.mu.RLock()
+	gotSize := len(c.data)
+	c.mu.RUnlock()
+
+	if diff := cmp.Diff(wanted, gotSize); diff != "" {
 		t.Fatalf("Item size mismatch (-want +got): %s\n", diff)
 	}
 }
