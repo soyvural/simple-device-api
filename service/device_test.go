@@ -94,7 +94,7 @@ func TestCreateDevice(t *testing.T) {
 				r = bytes.NewReader(out)
 			}
 
-			req := httptest.NewRequest("POST", "/api/v1/device", r)
+			req := httptest.NewRequest("POST", "/api/v1/devices", r)
 			rr := httptest.NewRecorder()
 			router.ServeHTTP(rr, req)
 
@@ -138,7 +138,7 @@ func TestGetDevice(t *testing.T) {
 			svc := &Service{router: router, deviceSvc: newDeviceService(&fakeDB{mockVal: tc.returningVal})}
 			svc.SetRoute_v1()
 
-			req := httptest.NewRequest("GET", fmt.Sprintf("/api/v1/device/%s", tc.id), nil)
+			req := httptest.NewRequest("GET", fmt.Sprintf("/api/v1/devices/%s", tc.id), nil)
 			rr := httptest.NewRecorder()
 			router.ServeHTTP(rr, req)
 
@@ -195,7 +195,7 @@ func TestDeleteDevice(t *testing.T) {
 			svc := &Service{router: router, deviceSvc: newDeviceService(&fakeDB{mockVal: tc.returningVal})}
 			svc.SetRoute_v1()
 
-			req := httptest.NewRequest("DELETE", fmt.Sprintf("/api/v1/device/%s", tc.id), nil)
+			req := httptest.NewRequest("DELETE", fmt.Sprintf("/api/v1/devices/%s", tc.id), nil)
 			rr := httptest.NewRecorder()
 			router.ServeHTTP(rr, req)
 
